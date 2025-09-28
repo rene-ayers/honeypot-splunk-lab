@@ -50,6 +50,7 @@ Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic 
 ```bash
 docker run -d -p 2222:2222 cowrie/cowrie
 
+### 3. Deploy Splunk Enterprise
 docker run -d --name splunk \
   -p 8000:8000 -p 8089:8089 -p 9997:9997 -p 1514:1514/udp \
   -e SPLUNK_START_ARGS="--accept-license" \
