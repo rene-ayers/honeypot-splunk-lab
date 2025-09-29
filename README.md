@@ -1,7 +1,7 @@
-# 🕵️ Honeypot Project
+# Honeypot Project
 
 ## Overview
-This project demonstrates a honeypot lab environment used to attract, log, and analyze malicious activity. The goal is to better understand attacker tactics, techniques, and procedures (TTPs) while practicing defensive monitoring.  
+Th project demonstrates a honeypot lab environment to attract, log, and analyze malicious activity. The goal is to better understand attacker TTPs while practicing defensive monitoring.  
 
 The lab includes:
 - **pfSense** as the firewall and gateway  
