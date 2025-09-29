@@ -1,10 +1,12 @@
-# Honeypot-Splunk-Lab  
+# 🪤 Honeypot-Splunk Lab  
 
 Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic analysis in a VMware lab environment.  
 
 ---
 
-## Project Overview  
+## 📌 Project Overview  
+
+This project demonstrates how to:  
 
 - Deploy a **Cowrie honeypot** to simulate vulnerable services  
 - Capture malicious activity directed at the honeypot  
@@ -15,7 +17,7 @@ Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic 
 
 ---
 
-## Technologies Used  
+## ⚙️ Technologies Used  
 
 - **VMware Workstation Pro** – Virtualized lab environment  
 - **pfSense** – Firewall and NAT port forwarding  
@@ -26,7 +28,7 @@ Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic 
 
 ---
 
-## Lab Architecture  
+## 🛠️ Lab Architecture  
 
 [ Attacker (simulated) ]  
 ↓  
@@ -38,11 +40,11 @@ Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic 
 
 ---
 
-## Setup Instructions  
+## 🚀 Setup Instructions  
 
 ### 1. Configure Networking  
-- Set up **pfSense VM** for NAT + port forwarding.  
-- Forward traffic from **WAN → Honeypot** (SSH on port **2222**).  
+- Set up **pfSense VM** for NAT + port forwarding  
+- Forward traffic from **WAN → Honeypot** (SSH on port **2222**)  
 
 ---
 
@@ -57,3 +59,6 @@ docker run -d --name splunk \
   -e SPLUNK_PASSWORD="Splunk123!" \
   splunk/splunk:latest
 
+
+```bash
+docker run -d -p 2222:2222 cowrie/cowrie
