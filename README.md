@@ -55,7 +55,10 @@ Enable SSH and Telnet listening
 
 Configure log output (JSON and syslog)
 
-Start Cowrie with bin/cowrie start.
+Start Cowrie with:
+
+bin/cowrie start
+
 
 Confirm Cowrie is capturing attacker login attempts and session activity.
 
