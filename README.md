@@ -1,64 +1,126 @@
-# 🪤 Honeypot-Splunk Lab  
+🕵️ Honeypot Project
+📖 Overview
 
-Honeypot (Cowrie) with Splunk Enterprise for log monitoring and network traffic analysis in a VMware lab environment.  
+This project sets up and deploys a honeypot lab environment to attract, log, and analyze malicious activity. The purpose is to better understand attacker tactics, techniques, and procedures (TTPs) while practicing defensive monitoring. The lab uses pfSense as the firewall and gateway, Cowrie as the primary honeypot, and Splunk for centralized log ingestion and visualization.
 
----
+⚙️ Lab Architecture
 
-## 📌 Project Overview  
+Host Environment: VMware Workstation Pro 17
 
-This project demonstrates how to:  
+Virtual Machines:
 
-- Deploy a **Cowrie honeypot** to simulate vulnerable services  
-- Capture malicious activity directed at the honeypot  
-- Forward logs into **Splunk Enterprise** for real-time monitoring and detection  
-- Build dashboards and alerts to analyze attacker behavior  
+pfSense Firewall – controls inbound/outbound traffic (NAT + port forwarding)
 
-👉 The goal is to show how a honeypot integrates with a SIEM for hands-on **security monitoring and threat analysis**.  
+Cowrie Honeypot – emulates SSH and Telnet services, logs attacker sessions
 
----
+Splunk Enterprise – collects and analyzes honeypot logs
 
-## ⚙️ Technologies Used  
+Network Design:
 
-- **VMware Workstation Pro** – Virtualized lab environment  
-- **pfSense** – Firewall and NAT port forwarding  
-- **Ubuntu** – Honeypot and Splunk host  
-- **Cowrie Honeypot** – SSH/Telnet emulation  
-- **Docker** – Containerized Splunk Enterprise deployment  
-- **Splunk Enterprise** – Log collection, parsing, dashboards, and alerting  
+WAN (pfSense → Internet/attacker entry point)
 
----
+LAN (pfSense → Honeypots + Splunk)
 
-## 🛠️ Lab Architecture  
+Only ports 22 (SSH) and 23 (Telnet) are forwarded to the honeypot
 
-[ Attacker (simulated) ]  
-↓  
-[ pfSense Firewall ] -- Port Forwarding (22 → 2222)  
-↓  
-[ Ubuntu VM: Cowrie Honeypot ]  
-↓  
-[ Splunk Enterprise Container ] → Dashboards & Alerts  
+[ Attacker ] → [ pfSense Firewall ] → [ Cowrie Honeypot ]
+                                 ↘→ [ Splunk SIEM ]
 
----
+🚀 Deployment Steps
+1. pfSense Firewall
 
-## 🚀 Setup Instructions  
+Create a VM for pfSense with two network adapters:
 
-### 1. Configure Networking  
-- Set up **pfSense VM** for NAT + port forwarding  
-- Forward traffic from **WAN → Honeypot** (SSH on port **2222**)  
+WAN: NAT
 
----
+LAN: Host-only/Internal network
 
-### 2. Deploy Cowrie Honeypot  
-```bash
-docker run -d -p 2222:2222 cowrie/cowrie
+Configure firewall rules:
 
-docker run -d --name splunk \
-  -p 8000:8000 -p 8089:8089 -p 9997:9997 -p 1514:1514/udp \
-  -e SPLUNK_START_ARGS="--accept-license" \
-  -e SPLUNK_GENERAL_TERMS=Y \
-  -e SPLUNK_PASSWORD="Splunk123!" \
-  splunk/splunk:latest
+Allow inbound SSH (22) and Telnet (23)
 
+Forward traffic on those ports to the Cowrie honeypot VM
 
-```bash
-docker run -d -p 2222:2222 cowrie/cowrie
+Verify rules with a port scan from outside (e.g., nmap).
+
+2. Cowrie Honeypot
+
+Deploy an Ubuntu VM for Cowrie.
+
+Install dependencies and clone Cowrie from GitHub.
+
+Configure cowrie.cfg:
+
+Enable SSH and Telnet listening
+
+Configure log output (JSON and syslog)
+
+Start Cowrie with bin/cowrie start.
+
+Confirm Cowrie is capturing attacker login attempts and session activity.
+
+3. Splunk Enterprise
+
+Install Splunk Enterprise on a separate VM.
+
+Configure Splunk inputs to ingest Cowrie logs via file monitoring or syslog.
+
+Build dashboards to track:
+
+Attacker IP addresses
+
+Commands executed
+
+Session frequency and duration
+
+MITRE ATT&CK mapping for observed behaviors
+
+📊 Use Cases
+
+Detect brute-force attempts on SSH and Telnet
+
+Analyze attacker command sequences and identify TTPs
+
+Collect and enrich attacker IPs with OSINT (AbuseIPDB, OTX, etc.)
+
+Visualize attack activity with Splunk dashboards
+
+📷 Screenshots
+
+Recommended screenshots to include:
+
+pfSense firewall rule configuration
+
+Cowrie session logs
+
+Splunk dashboards
+
+🔒 Security Considerations
+
+Run honeypots in an isolated lab environment only
+
+Do not expose directly to production networks
+
+Use pfSense segmentation to block attacker pivoting
+
+Rotate logs and monitor system resources
+
+📝 Future Enhancements
+
+Add Dionaea or HoneyDB honeypots for malware collection
+
+Automate IOC enrichment with Python scripts and APIs
+
+Integrate with SOAR tools for automated alerting
+
+Expand SIEM coverage to Elastic or QRadar
+
+📚 References
+
+Cowrie Honeypot
+
+pfSense Documentation
+
+Splunk Enterprise
+
+MITRE ATT&CK
