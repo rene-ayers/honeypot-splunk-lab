@@ -21,3 +21,6 @@ The lab includes:
 ```text
 [ Attacker ] → [ pfSense Firewall ] → [ Cowrie Honeypot ]
                                  ↘→ [ Splunk SIEM ]
+
+### Docker Containers
+![Docker Honeypot Setup](images/Docker_Commands_Honeypot.png)
